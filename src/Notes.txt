@@ -1,0 +1,4 @@
+Tips: second argument = dependency array
+  1. When we not provide second argument in useEffect then react excute effect after every render.
+  2. When we provide empty second argument the it will excute only once.
+  3. it we have Props or state variables in 2nd argument then it will excute every times when these value changes.

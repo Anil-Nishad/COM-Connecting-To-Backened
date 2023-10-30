@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useRef, useState } from "react";
+import ProductList from "./components/ProductList";
+//select.form-select
+const App = () => {
+  const ref = useRef<HTMLInputElement>(null);
+  //after Render
+  useEffect(() => {
+    //Side Effect
+    if (ref.current) ref.current.focus();
+  });
 
-function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    document.title = "My App";
+  });
+  const [category, setCategory] = useState("");
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      {/* <input ref={ref} type="text" className="form-control" /> */}\
+      <select
+        className="form-select"
+        onChange={(event) => setCategory(event.target.value)}
+      >
+        <option value=""></option>
+        <option value="Category">Category</option>
+        <option value="Household">Household</option>
+      </select>
+      <ProductList category={category} />
+    </div>
+  );
+};
 
-export default App
+export default App;

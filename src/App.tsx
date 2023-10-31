@@ -58,7 +58,7 @@ function App() {
     const controller = new AbortController();
     setLoading(true);
     axios
-      .get<User[]>("https://jsonplaceholder.typicode.com/musers", {
+      .get<User[]>("https://jsonplaceholder.typicode.com/users", {
         signal: controller.signal,
       })
       .then((response) => {
@@ -90,6 +90,16 @@ function App() {
     };
     fetchUsers();
   }, []);
+  const deleteUser = (user: User) => {
+    const originalUsers = [...users];
+    setUsers(users.filter((u) => u.id !== user.id));
+    axios
+      .delete("https://jsonplaceholder.typicode.com/users/" + user.id)
+      .catch((error) => {
+        setError(error.message);
+        setUsers(originalUsers);
+      });
+  };
   return (
     <div>
       {/* <input ref={ref} type="text" className="form-control" /> */}
@@ -104,9 +114,20 @@ function App() {
       <ProductList category={category} /> */}
       {error && <p className="text-danger">{error}</p>}
       {isLoading && <div className="spinner-border"></div>}
-      <ul>
+      <ul className="list-group">
         {users.map((user) => (
-          <li key={user.id}>{user.name}</li>
+          <li
+            key={user.id}
+            className="list-group-item d-flex justify-content-between"
+          >
+            {user.name}
+            <button
+              className="btn btn-outline-danger"
+              onClick={() => deleteUser(user)}
+            >
+              Delete
+            </button>
+          </li>
         ))}
       </ul>
     </div>

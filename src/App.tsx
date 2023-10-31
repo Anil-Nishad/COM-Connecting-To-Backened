@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ProductList from "./components/ProductList";
 //select.form-select
 import axios, { AxiosError, CanceledError } from "axios";
+import apiClient from "./services/api-client";
 
 const connect = () => console.log("Connecting");
 const disconnect = () => console.log("Disconnecting");
@@ -105,8 +106,10 @@ function App() {
     const originalUsers = [...users];
     const newUser = { id: 0, name: "Anil" };
     setUsers([newUser, ...users]);
-    axios
-      .post("https://jsonplaceholder.typicode.com/users", newUser)
+    // axios
+    //   .post("https://jsonplaceholder.typicode.com/users", newUser)
+    apiClient
+      .post("/users", newUser)
       .then((res) => setUsers([res.data, ...users]))
       //.then(({ data: savedUser }) => setUsers([savedUser, ...users]))
       .catch((err) => {

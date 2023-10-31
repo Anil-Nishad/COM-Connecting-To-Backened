@@ -56,16 +56,23 @@ function App() {
   // Cancelling a Fetch Request
   useEffect(() => {
     const controller = new AbortController();
+    setLoading(true);
     axios
       .get<User[]>("https://jsonplaceholder.typicode.com/musers", {
         signal: controller.signal,
       })
-      .then((response) => setUsers(response.data))
+      .then((response) => {
+        setUsers(response.data);
+        setLoading(false);
+      })
       .catch((error) => {
         if (error instanceof CanceledError) return;
         setError(error.message);
+        setLoading(false);
       });
-
+    // add this line of code to remove repetion
+    // But in strict mode it is not working
+    // .finally(() => {setLoading(false)})
     return () => controller.abort();
   }, []);
 
@@ -96,6 +103,7 @@ function App() {
       </select>
       <ProductList category={category} /> */}
       {error && <p className="text-danger">{error}</p>}
+      {isLoading && <div className="spinner-border"></div>}
       <ul>
         {users.map((user) => (
           <li key={user.id}>{user.name}</li>
